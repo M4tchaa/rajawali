@@ -1,0 +1,21 @@
+.footer-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-about {
+    text-align: center;
+    /* Memastikan teks di dalam footer-about berada di tengah */
+}
+
+.social-links {
+    justify-content: center;
+    /* Memastikan ikon media sosial berada di tengah */
+}
