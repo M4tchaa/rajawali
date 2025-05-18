@@ -1,64 +1,71 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Master Barang</h4>
-        <a href="#" class="btn btn-secondary">Tambah Barang Masuk</a>
+        <a href="#" class="btn btn-secondary">Tambah Barang</a>
     </div>
-    <div class="table-responsive mt-3">
-        <table id="barangMasukTable" class="table table-striped table-bordered">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="masterBarangTable">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama Barang</th>
                     <th>Supplier</th>
-                    <th>Tanggal Masuk</th>
-                    <th>Jumlah Masuk</th>
+                    <th>Stok</th>
+                    <th>Harga Sales</th>
+                    <th>Harga Toko</th>
+                    <th>Harga Online</th>
+                    <th>Harga Kompetitor</th>
+                    <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($data['barang_masuk'])): ?>
+                <?php if (!empty($barang)): ?>
                     <?php $no = 1;
-                    foreach ($data['barang_masuk'] as $barang): ?>
+                    foreach ($barang as $row): ?>
                         <tr>
                             <td><?= $no++; ?></td>
-                            <td><?= $barang->namaBarang; ?></td>
-                            <td><?= $barang->supplier; ?></td>
-                            <td><?= date('d-m-Y', strtotime($barang->tanggalMasuk)); ?></td>
-                            <td><?= $barang->jumlahMasuk; ?></td>
+                            <td><?= $row->namaBarang ?></td>
+                            <td><?= $row->supplier ?></td>
+                            <td><?= $row->stock ?></td>
+                            <td><?= $row->hargaSales ?></td>
+                            <td><?= $row->hargaToko ?></td>
+                            <td><?= $row->hargaOnline ?></td>
+                            <td><?= $row->hargaKompetitor ?></td>
                             <td>
-                                <a href="<?= base_url('master_barang/edit/' . $barang->id_barangMasuk); ?>"
+                                <?php if ($row->gambar): ?>
+                                    <img src="<?= base_url('content/uploads/' . $row->gambar) ?>" width="50">
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <a href="<?= base_url('master_barang/edit/' . $row->id_barang); ?>"
                                     class="btn btn-sm btn-warning" title="Edit">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a href="<?= base_url('master_barang/delete/' . $barang->id_barangMasuk); ?>"
+                                <a href="<?= base_url('master_barang/delete/' . $row->id_barang); ?>"
                                     class="btn btn-sm btn-danger"
                                     onclick="return confirm('Yakin ingin menghapus data ini?')" title="Hapus">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </td>
-
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6" class="text-center">Data tidak ditemukan.</td>
+                        <td colspan="11" class="text-center">Data tidak tersedia.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
+
         </table>
     </div>
 </div>
 
-<!-- Script untuk mengaktifkan DataTables -->
-<script type="text/javascript">
+<!-- DataTables -->
+<script>
     $(document).ready(function() {
-        $('#barangMasukTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-        });
+        $('#masterBarangTable').DataTable();
     });
 </script>

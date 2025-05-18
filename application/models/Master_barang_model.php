@@ -3,15 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Master_barang_model extends CI_Model {
 
-    public function __construct() {
-        parent::__construct();
+    public function get_all() {
+        return $this->db->get('barang')->result();
     }
 
-    // Fungsi untuk mengambil data barang masuk
-    public function get_barang_masuk() {
-        $this->db->select('*');
-        $this->db->from('barang_masuk');
-        $query = $this->db->get();
-        return $query->result();  // Mengembalikan hasil query sebagai array objek
-    }
+    public function search_barang($keyword)
+{
+    $this->db->like('namaBarang', $keyword);
+    $this->db->limit(10);
+    return $this->db->get('barang')->result();
+}
+
+
+
 }

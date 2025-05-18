@@ -2,20 +2,21 @@
 <div id="page-container" class="d-flex flex-column min-vh-100">
 
     <!-- Header -->
-    <header id="header" class="fixed-top py-2" style="background-color: #008374;">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none">
-                <h1 class="m-0 fw-bold">Mat Bilding</h1><span class="fs-3">.</span>
-            </a>
-            <nav>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="<?= base_url('login'); ?>">Login</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header id="header" class="fixed-top py-2" style="background-color: #008374;">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none">
+            <h1 class="m-0 fw-bold">Mat Bilding</h1><span class="fs-3">.</span>
+        </a>
+        <nav>
+            <?php if ($this->session->userdata('logged_in')): ?>
+                <a href="<?= base_url('dashboard'); ?>" class="btn btn-dark">Dashboard</a>
+            <?php else: ?>
+                <a href="<?= base_url('login'); ?>" class="btn btn-light">Login</a>
+            <?php endif; ?>
+        </nav>
+    </div>
+</header>
+
 
     <!-- Main Content -->
     <main class="container flex-grow-1" style="margin-top: 6rem;">

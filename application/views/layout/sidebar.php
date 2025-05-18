@@ -10,6 +10,9 @@
         <a href="<?= base_url('master_barang'); ?>" class="nav-link text-white">Master Data Barang</a>
     </li>
     <li class="nav-item">
+        <a href="<?= base_url('barang_masuk'); ?>" class="nav-link text-white">Data Barang Masuk</a>
+    </li>
+    <li class="nav-item">
         <a href="<?= base_url('barang_keluar'); ?>" class="nav-link text-white">Data Barang Keluar</a>
     </li>
     <li class="nav-item">
