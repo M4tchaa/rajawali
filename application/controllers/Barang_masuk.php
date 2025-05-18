@@ -42,7 +42,7 @@ class Barang_masuk extends CI_Controller
 
         $this->db->trans_start();
         $this->Barang_masuk_model->insert($data);
-        $this->update_stok_barang($post['id_barang'], $post['jumlahMasuk']);
+        $this->update_stok_barang($post['id_barang'], $post['jumlahMasuk'], $post['supplier']);
         $this->db->trans_complete();
 
         echo json_encode(['success' => $this->db->trans_status()]);
@@ -67,7 +67,7 @@ class Barang_masuk extends CI_Controller
 
         $this->db->trans_start();
         $this->Barang_masuk_model->update($id, $data);
-        $this->update_stok_barang($post['id_barang'], $difference);
+        $this->update_stok_barang($post['id_barang'], $difference, $post['supplier']);
         $this->db->trans_complete();
 
         echo json_encode(['success' => $this->db->trans_status()]);
@@ -79,15 +79,21 @@ class Barang_masuk extends CI_Controller
 
         $this->db->trans_start();
         $this->Barang_masuk_model->delete($id);
-        $this->update_stok_barang($data->id_barang, -$data->jumlahMasuk);
+        $this->update_stok_barang($data->id_barang, -$data->jumlahMasuk, null);
         $this->db->trans_complete();
 
         echo json_encode(['success' => $this->db->trans_status()]);
     }
 
-    private function update_stok_barang($id_barang, $jumlah)
+    private function update_stok_barang($id_barang, $jumlah, $supplier = null)
     {
         $this->db->set('stock', 'stock + (' . $jumlah . ')', FALSE);
+        
+        // Jika ada supplier yang diberikan, update supplier juga
+        if (!is_null($supplier)) {
+            $this->db->set('supplier', $supplier);
+        }
+
         $this->db->where('id_barang', $id_barang);
         $this->db->update('barang');
     }
