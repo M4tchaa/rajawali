@@ -13,4 +13,21 @@ class Supplier extends CI_Controller {
         $this->load->view('layout/mainwrapper', ['content' => 'modules/supplier', 'data' => $data]);
         $this->load->view('layout/footer');
     }
+
+    public function search()
+    {
+        $query = $this->input->get('q');
+        $this->db->like('nama', $query);
+        $result = $this->db->get('data_sales')->result_array();
+
+        $data = [];
+        foreach ($result as $row) {
+            $data[] = [
+                'id' => $row['id_sales'],
+                'text' => $row['nama'] . ' - ' . $row['perusahaan']
+            ];
+        }
+
+        echo json_encode($data);
+    }
 }
