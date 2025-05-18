@@ -15,6 +15,7 @@
                     <th>Harga Toko</th>
                     <th>Harga Online</th>
                     <th>Harga Kompetitor</th>
+                    <th>Min Stok</th>
                     <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
@@ -32,6 +33,7 @@
                             <td><?= $row->hargaToko ?></td>
                             <td><?= $row->hargaOnline ?></td>
                             <td><?= $row->hargaKompetitor ?></td>
+                            <td><?= $row->min_stock ?></td>
                             <td>
                                 <?php if ($row->gambar): ?>
                                     <img src="<?= base_url('content/uploads/' . $row->gambar) ?>" width="50">
@@ -72,7 +74,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id_barang" id="id_barang">
-                    
+
                     <div class="form-group row mb-3">
                         <label for="namaBarang" class="col-sm-4 col-form-label text-right">Nama Barang</label>
                         <div class="col-sm-8">
@@ -116,6 +118,14 @@
                     </div>
 
                     <div class="form-group row mb-3">
+                        <label for="min_stock" class="col-sm-4 col-form-label text-right">Minimum Stok</label>
+                        <div class="col-sm-8">
+                            <input type="number" name="min_stock" id="min_stock" class="form-control" value="0" required>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row mb-3">
                         <label for="gambar" class="col-sm-4 col-form-label text-right">Gambar</label>
                         <div class="col-sm-8">
                             <input type="file" name="gambar" id="gambar" class="form-control">
@@ -153,6 +163,7 @@
                 $('#id_barang').val(data.id_barang);
                 $('#namaBarang').val(data.namaBarang);
                 $('#stock').val(data.stock);
+                $('#min_stock').val(data.min_stock);
                 $('#hargaSales').val(data.hargaSales);
                 $('#hargaToko').val(data.hargaToko);
                 $('#hargaOnline').val(data.hargaOnline);
@@ -160,7 +171,7 @@
                 $('#formModal').modal('show');
             }, 'json');
         });
-    
+
 
         // Tombol Hapus
         $('.btnDelete').click(function() {
@@ -191,52 +202,52 @@
             });
         });
 
-            $('#btnAdd').click(function() {
-        $('#formModalLabel').text('Tambah Barang');
-        $('#formBarang')[0].reset();
-        $('#id_barang').val('');
-        $('#formModal').modal('show');
-    });
+        $('#btnAdd').click(function() {
+            $('#formModalLabel').text('Tambah Barang');
+            $('#formBarang')[0].reset();
+            $('#id_barang').val('');
+            $('#formModal').modal('show');
+        });
 
-    $('#btnSave').click(function() {
-        var formData = new FormData($('#formBarang')[0]);
+        $('#btnSave').click(function() {
+            var formData = new FormData($('#formBarang')[0]);
 
-        $.ajax({
-            url: '<?= base_url("master_barang/store") ?>',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            cache: false,
-            dataType: 'json',
-            success: function(response) {
-                console.log("Response:", response);
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sukses',
-                        text: response.message,
-                    }).then(() => {
-                        $('#formModal').modal('hide');
-                        location.reload();
-                    });
-                } else {
+            $.ajax({
+                url: '<?= base_url("master_barang/store") ?>',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                dataType: 'json',
+                success: function(response) {
+                    console.log("Response:", response);
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sukses',
+                            text: response.message,
+                        }).then(() => {
+                            $('#formModal').modal('hide');
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: response.message || 'Terjadi kesalahan.',
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
-                        text: response.message || 'Terjadi kesalahan.',
+                        text: 'Terjadi kesalahan koneksi.',
                     });
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error:", error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: 'Terjadi kesalahan koneksi.',
-                });
-            }
+            });
         });
-    });
     });
 </script>

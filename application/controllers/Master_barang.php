@@ -30,50 +30,45 @@ class Master_barang extends CI_Controller
         echo json_encode($data);
     }
 
-public function store()
-{
-    $post = $this->input->post();
-    
-    $data = [
-        'namaBarang' => $post['namaBarang'],
-        'stock' => $post['stock'],
-        'hargaSales' => $post['hargaSales'],
-        'hargaToko' => $post['hargaToko'],
-        'hargaOnline' => $post['hargaOnline'],
-        'hargaKompetitor' => $post['hargaKompetitor'],
-        'is_deleted' => 0
-    ];
+    public function store()
+    {
+        $post = $this->input->post();
 
-    // Debugging - Pastikan Folder Ada
-    $upload_path = FCPATH . 'content/uploads/';
-    if (!is_dir($upload_path)) {
-        mkdir($upload_path, 0755, true);
-    }
+        $data = [
+            'namaBarang' => $post['namaBarang'],
+            'stock' => $post['stock'],
+            'min_stock' => $post['min_stock'],
+            'hargaSales' => $post['hargaSales'],
+            'hargaToko' => $post['hargaToko'],
+            'hargaOnline' => $post['hargaOnline'],
+            'hargaKompetitor' => $post['hargaKompetitor'],
+            'is_deleted' => 0
+        ];
 
-    // Handle gambar jika diupload
-    if (!empty($_FILES['gambar']['name'])) {
-        $target_file = $upload_path . time() . '_' . $_FILES['gambar']['name'];
-        if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
-            $data['gambar'] = basename($target_file);
+        // Debugging - Pastikan Folder Ada
+        $upload_path = FCPATH . 'content/uploads/';
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0755, true);
         }
-    }
 
-    if (empty($post['id_barang'])) {
-        $insert = $this->Master_barang_model->insert($data);
-        if ($insert) {
-            echo json_encode(['success' => true, 'message' => 'Barang berhasil ditambahkan.']);
+        // Handle gambar jika diupload
+        if (!empty($_FILES['gambar']['name'])) {
+            $target_file = $upload_path . time() . '_' . $_FILES['gambar']['name'];
+            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
+                $data['gambar'] = basename($target_file);
+            }
+        }
+
+        if (empty($post['id_barang'])) {
+            $insert = $this->Master_barang_model->insert($data);
+            $message = $insert ? 'Barang berhasil ditambahkan.' : 'Gagal menambahkan barang.';
         } else {
-            echo json_encode(['success' => false, 'message' => 'Gagal menambahkan barang.']);
+            $update = $this->Master_barang_model->update($post['id_barang'], $data);
+            $message = $update ? 'Barang berhasil diupdate.' : 'Gagal mengupdate barang.';
         }
-    } else {
-        $update = $this->Master_barang_model->update($post['id_barang'], $data);
-        if ($update) {
-            echo json_encode(['success' => true, 'message' => 'Barang berhasil diupdate.']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Gagal mengupdate barang.']);
-        }
+
+        echo json_encode(['success' => isset($insert) ? $insert : $update, 'message' => $message]);
     }
-}
 
 
     public function delete($id)
@@ -86,7 +81,7 @@ public function store()
     public function search()
     {
         $query = $this->input->get('q');
-        
+
         // Query pencarian dari database hanya untuk barang yang tidak terhapus
         $this->db->like('namaBarang', $query);
         $this->db->where('is_deleted', 0);
@@ -102,5 +97,12 @@ public function store()
         }
 
         echo json_encode($data);
+    }
+
+    public function check_low_stock()
+    {
+        $this->load->model('Master_barang_model');
+        $low_stock_items = $this->Master_barang_model->get_low_stock();
+        echo json_encode($low_stock_items);
     }
 }

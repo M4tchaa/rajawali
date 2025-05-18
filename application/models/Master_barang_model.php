@@ -1,11 +1,10 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Master_barang_model extends CI_Model
 {
     public function get_all()
     {
-        // Hanya menampilkan barang yang belum dihapus (is_deleted = 0)
         $this->db->where('is_deleted', 0);
         return $this->db->get('barang')->result();
     }
@@ -26,19 +25,26 @@ class Master_barang_model extends CI_Model
         return $this->db->update('barang', $data);
     }
 
-    // Soft delete (hanya mengubah is_deleted menjadi 1)
     public function soft_delete($id)
     {
         $this->db->where('id_barang', $id);
         return $this->db->update('barang', ['is_deleted' => 1]);
     }
 
-    // Fungsi Pencarian Barang (Select2)
     public function search_barang($keyword)
     {
         $this->db->like('namaBarang', $keyword);
         $this->db->where('is_deleted', 0);
         $this->db->limit(10);
         return $this->db->get('barang')->result();
+    }
+
+    public function get_low_stock()
+    {
+        $this->db->select('namaBarang, stock, min_stock');
+        $this->db->from('barang');
+        $this->db->where('is_deleted', 0);
+        $this->db->where('stock < min_stock');
+        return $this->db->get()->result_array();
     }
 }

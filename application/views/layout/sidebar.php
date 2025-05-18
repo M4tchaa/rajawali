@@ -4,9 +4,6 @@
         <a href="<?= base_url('dashboard'); ?>" class="nav-link text-white">Dashboard</a>
     </li>
     <li class="nav-item">
-        <a href="<?= base_url('app'); ?>" class="nav-link text-white">Homepage</a>
-    </li>
-    <li class="nav-item">
         <a href="<?= base_url('master_barang'); ?>" class="nav-link text-white">Master Data Barang</a>
     </li>
     <li class="nav-item">
@@ -18,7 +15,14 @@
     <li class="nav-item">
         <a href="<?= base_url('supplier'); ?>" class="nav-link text-white">Data Supplier</a>
     </li>
-    <li class="nav-item mt-2">
+
+    <!-- Separator -->
+    <hr class="text-white my-3">
+
+    <li class="nav-item">
+        <a href="<?= base_url('app'); ?>" class="nav-link text-white">Homepage</a>
+    </li>
+    <li class="nav-item">
         <a href="<?= base_url('login/logout'); ?>" class="nav-link text-danger">Logout</a>
     </li>
 </ul>
