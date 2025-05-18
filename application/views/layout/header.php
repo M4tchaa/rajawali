@@ -12,7 +12,7 @@
 
 
     <title>Rajawali</title>
-    <!-- <link rel="icon" type="image/x-icon" href="public/rq.png"> -->
+    <link rel="icon" type="image/x-icon" href="public/img/logo.png">
 
     <!-- Font Library -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />

@@ -8,6 +8,13 @@
                     <h1 class="m-0 fw-bold">Mat Bilding</h1><span class="fs-3">.</span>
                 </a>
                 <nav>
+                    <!-- Icon Notifikasi -->
+                    <a href="javascript:void(0);" class="text-white position-relative" onclick="showLowStockAlert()" style="margin-right: 20px;">
+                        <i class="bi bi-bell" style="font-size: 1.5rem;"></i>
+                        <span id="notifBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </a>
                     <?php if ($this->session->userdata('logged_in')): ?>
                         <a href="<?= base_url('dashboard'); ?>" class="btn btn-dark">Dashboard</a>
                     <?php else: ?>
